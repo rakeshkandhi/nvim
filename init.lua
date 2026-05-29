@@ -34,6 +34,9 @@ vim.opt.rtp:prepend(lazypath)
 -- =========================
 require("lazy").setup({
 	{
+		"mfussenegger/nvim-lint",
+	},
+	{
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000,
@@ -79,6 +82,7 @@ require("mason-lspconfig").setup({
 		"pyright",
 		"lua_ls",
 		"ts_ls",
+		"ltex",
 	},
 })
 
@@ -102,6 +106,23 @@ vim.lsp.enable({
 	"pyright",
 	"ts_ls",
 	"lua_ls",
+})
+
+
+local lint = require("lint")
+
+lint.linters_by_ft = {
+	python = { "ruff" },
+	javascript = { "eslint_d" },
+	typescript = { "eslint_d" },
+	javascriptreact = { "eslint_d" },
+	typescriptreact = { "eslint_d" },
+}
+
+vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "InsertLeave" }, {
+	callback = function()
+		lint.try_lint()
+	end,
 })
 
 -- =========================
@@ -141,11 +162,63 @@ vim.cmd.colorscheme("catppuccin")
 -- =========================
 -- Telescope
 -- =========================
-local telescope = require("telescope.builtin")
+local telescope = require("telescope")
+local builtin = require("telescope.builtin")
 
-vim.keymap.set("n", "<leader>ff", telescope.find_files, {})
-vim.keymap.set("n", "<leader>fg", telescope.live_grep, {})
-vim.keymap.set("n", "<leader>fb", telescope.buffers, {})
+telescope.setup({
+	defaults = {
+		file_ignore_patterns = {
+			"node_modules",
+			".git/",
+			"dist/",
+			"build/",
+			".next/",
+			"coverage/",
+			"__pycache__/",
+			"%.pyc",
+			"%.pyo",
+			".venv/",
+			"venv/",
+			".mypy_cache/",
+			".pytest_cache/",
+		},
+	},
+})
+
+vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
+
+-- =========================
+
+vim.diagnostic.config({
+	virtual_text = true,
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
+	float = {
+		border = "rounded",
+		source = "always",
+	},
+})
+
+-- =========================
+
+vim.lsp.config("ltex", {
+	settings = {
+		ltex = {
+			language = "en-US",
+			enabled = {
+				"markdown",
+				"text",
+				"gitcommit",
+			},
+		},
+	},
+})
+
+vim.lsp.enable("ltex")
 
 -- =========================
 -- Formatting
@@ -158,8 +231,8 @@ vim.keymap.set("n", "<leader>f", function()
 end)
 
 vim.keymap.set("n", "<Esc>", function()
-    vim.cmd("nohlsearch")
-    vim.cmd("echo ''")
+	vim.cmd("nohlsearch")
+	vim.cmd("echo ''")
 end)
 
 -- =========================
