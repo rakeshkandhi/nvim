@@ -17,14 +17,14 @@ vim.g.maplocalleader = " "
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.uv.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable",
-        lazypath,
-    })
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable",
+		lazypath,
+	})
 end
 
 vim.opt.rtp:prepend(lazypath)
@@ -33,40 +33,40 @@ vim.opt.rtp:prepend(lazypath)
 -- Plugins
 -- =========================
 require("lazy").setup({
-    {
-        "catppuccin/nvim",
-        name = "catppuccin",
-        priority = 1000,
-    },
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-    },
-    -- LSP
-    { "neovim/nvim-lspconfig" },
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		priority = 1000,
+	},
+	{
+		"nvim-treesitter/nvim-treesitter",
+		build = ":TSUpdate",
+	},
+	-- LSP
+	{ "neovim/nvim-lspconfig" },
 
-    -- Mason
-    {
-        "mason-org/mason.nvim",
-        opts = {},
-    },
+	-- Mason
+	{
+		"mason-org/mason.nvim",
+		opts = {},
+	},
 
-    {
-        "mason-org/mason-lspconfig.nvim",
-    },
+	{
+		"mason-org/mason-lspconfig.nvim",
+	},
 
-    -- Formatter
-    {
-        "stevearc/conform.nvim",
-    },
+	-- Formatter
+	{
+		"stevearc/conform.nvim",
+	},
 
-    -- Telescope
-    {
-        "nvim-telescope/telescope.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-    },
+	-- Telescope
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+	},
 })
 
 -- =========================
@@ -75,11 +75,11 @@ require("lazy").setup({
 require("mason").setup()
 
 require("mason-lspconfig").setup({
-    ensure_installed = {
-        "pyright",
-        "lua_ls",
-        "ts_ls",
-    },
+	ensure_installed = {
+		"pyright",
+		"lua_ls",
+		"ts_ls",
+	},
 })
 
 -- =========================
@@ -89,51 +89,51 @@ vim.lsp.config("pyright", {})
 vim.lsp.config("ts_ls", {})
 
 vim.lsp.config("lua_ls", {
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { "vim" },
-            },
-        },
-    },
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "vim" },
+			},
+		},
+	},
 })
 
 vim.lsp.enable({
-    "pyright",
-    "ts_ls",
-    "lua_ls",
+	"pyright",
+	"ts_ls",
+	"lua_ls",
 })
 
 -- =========================
 -- Formatter
 -- =========================
 require("conform").setup({
-    formatters_by_ft = {
-        lua = { "stylua" },
+	formatters_by_ft = {
+		lua = { "stylua" },
 
-        python = { "black" },
+		python = { "black" },
 
-        javascript = { "prettier" },
-        javascriptreact = { "prettier" },
+		javascript = { "prettier" },
+		javascriptreact = { "prettier" },
 
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
+		typescript = { "prettier" },
+		typescriptreact = { "prettier" },
 
-        json = { "prettier" },
-        jsonc = { "prettier" },
-    },
+		json = { "prettier" },
+		jsonc = { "prettier" },
+	},
 })
 
 require("catppuccin").setup({
-    flavour = "mocha",
+	flavour = "mocha",
 
-    integrations = {
-        mason = true,
-        telescope = true,
-        native_lsp = {
-            enabled = true,
-        },
-    },
+	integrations = {
+		mason = true,
+		telescope = true,
+		native_lsp = {
+			enabled = true,
+		},
+	},
 })
 
 vim.cmd.colorscheme("catppuccin")
@@ -151,10 +151,15 @@ vim.keymap.set("n", "<leader>fb", telescope.buffers, {})
 -- Formatting
 -- =========================
 vim.keymap.set("n", "<leader>f", function()
-    require("conform").format({
-        async = true,
-        lsp_fallback = true,
-    })
+	require("conform").format({
+		async = true,
+		lsp_fallback = true,
+	})
+end)
+
+vim.keymap.set("n", "<Esc>", function()
+    vim.cmd("nohlsearch")
+    vim.cmd("echo ''")
 end)
 
 -- =========================
