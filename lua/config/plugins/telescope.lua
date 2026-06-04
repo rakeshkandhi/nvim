@@ -3,15 +3,39 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
+	keys = {
+		{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+		{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
+		{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+		{ "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
+		{ "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Git Commits" },
+		{ "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Git Branches" },
+		{ "<leader>gs", "<cmd>Telescope git_status<cr>", desc = "Git Status" },
+		{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
+		{ "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
+		{ "<leader>fc", "<cmd>Telescope commands<cr>", desc = "Commands" },
+		{ "<leader>fw", "<cmd>Telescope grep_string<cr>", desc = "Grep String" },
+		{ "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Go to Definition" },
+		{ "gr", "<cmd>Telescope lsp_references<cr>", desc = "Go to References" },
+		{ "gi", "<cmd>Telescope lsp_implementations<cr>", desc = "Go to Implementations" },
+		{ "gt", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Go to Type Definition" },
+		{ "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
+		{ "<leader>fS", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace Symbols" },
+	},
 	config = function()
 		local telescope = require("telescope")
-		local builtin = require("telescope.builtin")
 
 		telescope.setup({
 			defaults = {
+				layout_strategy = "horizontal",
+				layout_config = {
+					width = 0.95, -- 95% of screen width
+					height = 0.95, -- 95% of screen height
+					preview_width = 0.70, -- preview gets 70% of width
+				},
 				file_ignore_patterns = {
 					"node_modules",
-					".git/",
+					"^.git/",
 					"dist/",
 					"build/",
 					".next/",
@@ -29,35 +53,8 @@ return {
 			pickers = {
 				find_files = {
 					hidden = true,
-					no_ignore = true,
 				},
 			},
-		})
-
-		-- Telescope keymaps
-		vim.keymap.set("n", "<leader>ff", builtin.find_files)
-		vim.keymap.set("n", "<leader>fg", builtin.live_grep)
-		vim.keymap.set("n", "<leader>fb", builtin.buffers)
-		vim.keymap.set("n", "<leader>fd", builtin.diagnostics)
-		vim.keymap.set("n", "<leader>gc", builtin.git_commits)
-		vim.keymap.set("n", "<leader>gb", builtin.git_branches)
-		vim.keymap.set("n", "<leader>gs", builtin.git_status)
-
-		vim.keymap.set("n", "<leader>fh", builtin.help_tags)
-		vim.keymap.set("n", "<leader>fk", builtin.keymaps)
-		vim.keymap.set("n", "<leader>fc", builtin.commands)
-		vim.keymap.set("n", "<leader>fw", builtin.grep_string)
-
-		-- LSP Telescope keymaps
-		vim.keymap.set("n", "gd", builtin.lsp_definitions, { desc = "Definition" })
-		vim.keymap.set("n", "gr", builtin.lsp_references, { desc = "References" })
-		vim.keymap.set("n", "gi", builtin.lsp_implementations, { desc = "Implementations" })
-		vim.keymap.set("n", "gt", builtin.lsp_type_definitions, { desc = "Type Definitions" })
-		vim.keymap.set("n", "<leader>fs", builtin.lsp_document_symbols, {
-			desc = "Document Symbols",
-		})
-		vim.keymap.set("n", "<leader>fS", builtin.lsp_workspace_symbols, {
-			desc = "Workspace Symbols",
 		})
 	end,
 }

@@ -94,8 +94,6 @@ return {
 			vim.diagnostic.jump({ count = 1, float = true })
 		end)
 
-		vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
-
 		vim.keymap.set("n", "<A-Left>", "<C-o>", {
 			desc = "Jump Back",
 		})

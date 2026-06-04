@@ -26,11 +26,13 @@ return {
 		})
 
 		-- Format keymap
-		vim.keymap.set("n", "<leader>f", function()
+		local format_fn = function()
 			require("conform").format({
 				async = true,
 				lsp_fallback = true,
 			})
-		end)
+		end
+		vim.keymap.set("n", "<leader>f", format_fn, { desc = "Format Document" })
+		vim.keymap.set("n", "<A-S-f>", format_fn, { desc = "Format Document (VSCode-like)" })
 	end,
 }
