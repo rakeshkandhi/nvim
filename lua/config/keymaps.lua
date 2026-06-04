@@ -1,10 +1,5 @@
 vim.keymap.set("n", "gl", vim.diagnostic.open_float)
 
--- =========================
--- Convenience
--- =========================
-vim.keymap.set("n", "<leader>o", "o<Esc>")
-vim.keymap.set("n", "<leader>O", "O<Esc>")
 
 vim.keymap.set("n", "<Esc>", function()
 	vim.cmd("nohlsearch")
@@ -16,7 +11,11 @@ end)
 -- =========================
 
 -- Save file with Ctrl+S (Normal, Insert, Visual modes)
-vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
+vim.keymap.set({ "n", "i", "v" }, "<C-s>", function()
+	if vim.bo.modifiable and vim.bo.buftype == "" then
+		vim.cmd("write")
+	end
+end, { desc = "Save File" })
 
 -- Toggle comments with Ctrl+/ or Ctrl+_ (Normal, Visual modes)
 vim.keymap.set("n", "<C-/>", "gcc", { remap = true, desc = "Toggle Comment" })

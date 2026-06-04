@@ -32,7 +32,6 @@ return {
 				lsp_fallback = true,
 			})
 		end
-		vim.keymap.set("n", "<leader>f", format_fn, { desc = "Format Document" })
-		vim.keymap.set("n", "<A-S-f>", format_fn, { desc = "Format Document (VSCode-like)" })
+		vim.keymap.set("n", "<A-S-f>", format_fn, { desc = "Format Document" })
 	end,
 }

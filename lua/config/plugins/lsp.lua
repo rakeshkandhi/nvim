@@ -2,6 +2,7 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
+		"mason-org/mason-lspconfig.nvim",
 	},
 	config = function()
 		-- =========================
@@ -30,61 +31,45 @@ return {
 		-- =========================
 		-- LSP Server Configuration
 		-- =========================
-		vim.lsp.config("pyright", {
-			capabilities = capabilities,
-		})
-
-		vim.lsp.config("ts_ls", {
-			capabilities = capabilities,
-		})
-
-		vim.lsp.config("lua_ls", {
-			capabilities = capabilities,
-			settings = {
+		local servers = {
+			pyright = {},
+			ts_ls = {},
+			html = {},
+			cssls = {},
+			tailwindcss = {},
+			jsonls = {},
+			yamlls = {},
+			bashls = {},
+			clangd = {},
+			lua_ls = {
 				Lua = {
 					diagnostics = {
 						globals = { "vim" },
 					},
 				},
 			},
-		})
+		}
 
-		vim.lsp.config("ltex", {
-			capabilities = capabilities,
-			settings = {
-				ltex = {
-					language = "en-US",
-					enabled = {
-						"markdown",
-						"text",
-						"gitcommit",
-					},
-				},
-			},
-		})
+		for server, settings in pairs(servers) do
+			vim.lsp.config(server, {
+				capabilities = capabilities,
+				settings = next(settings) and settings or nil,
+			})
+		end
 
-		vim.lsp.enable({
-			"pyright",
-			"ts_ls",
-			"lua_ls",
-			"ltex",
-		})
+		vim.lsp.enable(vim.tbl_keys(servers))
 
 		-- =========================
-		-- LSP Keymaps (Non-Telescope)
+		-- LSP Keymaps
 		-- =========================
-		vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {
-			desc = "Diagnostic List",
-		})
+		vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Diagnostic List" })
 
 		vim.keymap.set("n", "K", function()
-			vim.lsp.buf.hover({
-				border = "rounded",
-			})
+			vim.lsp.buf.hover({ border = "rounded" })
 		end)
 
 		vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
-		vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
+		vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
 
 		vim.keymap.set("n", "[d", function()
 			vim.diagnostic.jump({ count = -1, float = true })
@@ -94,12 +79,7 @@ return {
 			vim.diagnostic.jump({ count = 1, float = true })
 		end)
 
-		vim.keymap.set("n", "<A-Left>", "<C-o>", {
-			desc = "Jump Back",
-		})
-
-		vim.keymap.set("n", "<A-Right>", "<C-i>", {
-			desc = "Jump Forward",
-		})
+		vim.keymap.set("n", "<A-Left>", "<C-o>", { desc = "Jump Back" })
+		vim.keymap.set("n", "<A-Right>", "<C-i>", { desc = "Jump Forward" })
 	end,
 }
