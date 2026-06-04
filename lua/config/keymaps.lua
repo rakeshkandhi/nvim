@@ -38,3 +38,7 @@ vim.keymap.set("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Line Up" 
 vim.keymap.set("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move Selection Down" })
 vim.keymap.set("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move Selection Up" })
 
+-- Toggle line wrap (Alt+Z, VSCode-like)
+vim.keymap.set("n", "<A-z>", function()
+	vim.opt.wrap = not vim.o.wrap
+end, { desc = "Toggle Line Wrap" })

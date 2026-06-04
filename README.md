@@ -87,6 +87,7 @@ All keymaps use `<Space>` as the leader key.
 | `Alt + j` | Normal / Insert / Visual | Move line(s) down |
 | `Alt + k` | Normal / Insert / Visual | Move line(s) up |
 | `Alt + Shift + F` | Normal | Format document |
+| `Alt + z` | Normal | Toggle line wrap |
 
 ---
 

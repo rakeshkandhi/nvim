@@ -29,10 +29,12 @@ return {
 			defaults = {
 				layout_strategy = "horizontal",
 				layout_config = {
-					width = 0.95, -- 95% of screen width
-					height = 0.95, -- 95% of screen height
-					preview_width = 0.70, -- preview gets 70% of width
+					width = 0.95,
+					height = 0.95,
+					preview_width = 0.70,
+					preview_cutoff = 0,
 				},
+				wrap_results = true,
 				file_ignore_patterns = {
 					"node_modules",
 					"^.git/",
