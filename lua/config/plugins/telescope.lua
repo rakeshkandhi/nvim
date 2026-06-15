@@ -1,3 +1,34 @@
+local function live_grep_filenames_only(opts)
+	local make_entry = require("telescope.make_entry")
+	opts = opts or {}
+	local original_entry_maker = make_entry.gen_from_vimgrep(opts)
+
+	opts.entry_maker = function(line)
+		local entry = original_entry_maker(line)
+		if entry then
+			-- Access these to trigger the lazy parsing under the metatable
+			local filename = entry.filename
+			local path = entry.path
+
+			-- Normalize paths to use forward slashes to prevent escaping issues on Windows
+			if filename then
+				entry.filename = filename:gsub("\\", "/")
+			end
+			if path then
+				entry.path = path:gsub("\\", "/")
+			end
+
+			entry.display = function(display_entry)
+				local display_filename = display_entry.filename:gsub("/", "\\")
+				return string.format("%s:%s:%s", display_filename, display_entry.lnum, display_entry.col)
+			end
+		end
+		return entry
+	end
+
+	require("telescope.builtin").live_grep(opts)
+end
+
 return {
 	"nvim-telescope/telescope.nvim",
 	dependencies = {
@@ -5,7 +36,13 @@ return {
 	},
 	keys = {
 		{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
-		{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
+		{
+			"<leader>fg",
+			function()
+				live_grep_filenames_only()
+			end,
+			desc = "Live Grep (Filenames Only)",
+		},
 		{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
 		{ "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
 		{ "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Git Commits" },
