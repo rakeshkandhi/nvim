@@ -49,6 +49,7 @@ return {
 					"--glob", "!coverage/",
 					"--glob", "!.DS_Store",
 					"--glob", "!package-lock.json",
+					"--glob", "!.worktrees/",
 				},
 				layout_strategy = "horizontal",
 				layout_config = {
@@ -71,6 +72,7 @@ return {
 					"out[\\/]",
 					"coverage[\\/]",
 					"package%-lock%.json$",
+					"%.worktrees[\\/]",
 				},
 			},
 
@@ -94,6 +96,7 @@ return {
 						"--glob", "!coverage/",
 						"--glob", "!.DS_Store",
 						"--glob", "!package-lock.json",
+						"--glob", "!.worktrees/",
 					},
 				},
 			},
