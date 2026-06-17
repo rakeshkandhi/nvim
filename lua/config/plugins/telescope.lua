@@ -162,6 +162,34 @@ return {
 						"--glob", "!pnpm-lock.yaml",
 						"--glob", "!poetry.lock",
 					},
+					mappings = {
+						i = {
+							["<C-y>"] = function(prompt_bufnr)
+								local action_state = require("telescope.actions.state")
+								local actions = require("telescope.actions")
+								local entry = action_state.get_selected_entry()
+								if entry then
+									local path = entry.value:gsub("\\", "/")
+									vim.fn.setreg("+", path)
+									vim.notify("Copied path: " .. path, vim.log.levels.INFO)
+								end
+								actions.select_default(prompt_bufnr)
+							end,
+						},
+						n = {
+							["y"] = function(prompt_bufnr)
+								local action_state = require("telescope.actions.state")
+								local actions = require("telescope.actions")
+								local entry = action_state.get_selected_entry()
+								if entry then
+									local path = entry.value:gsub("\\", "/")
+									vim.fn.setreg("+", path)
+									vim.notify("Copied path: " .. path, vim.log.levels.INFO)
+								end
+								actions.select_default(prompt_bufnr)
+							end,
+						},
+					},
 				},
 			},
 		})
