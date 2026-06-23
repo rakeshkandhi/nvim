@@ -30,8 +30,6 @@ A clean and highly optimized Neovim development environment tailored for modern 
 | `gitsigns.nvim` | Git diff gutter signs, hunk actions, inline blame |
 | `indent-blankline.nvim` | Vertical indent guides with scope highlighting |
 | `nvim-ts-context-commentstring` | Context-aware JSX/TSX commenting |
-| `render-markdown.nvim` | Rich markdown rendering in buffer (headings, code blocks, tables) |
-| `nvim-web-devicons` | File type icons (used by render-markdown) |
 | `undotree` | Graphical undo history |
 | `catppuccin` | Theme (Mocha) |
 
