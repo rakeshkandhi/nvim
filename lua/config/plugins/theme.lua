@@ -10,6 +10,10 @@ return {
 				mason = true,
 				telescope = true,
 				gitsigns = true,
+				cmp = true,
+				notify = true,
+				which_key = true,
+				dashboard = true,
 				indent_blankline = { enabled = true },
 				native_lsp = {
 					enabled = true,
