@@ -31,8 +31,10 @@ end
 
 return {
 	"nvim-telescope/telescope.nvim",
+	cmd = "Telescope",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	},
 	keys = {
 		{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
@@ -193,5 +195,7 @@ return {
 				},
 			},
 		})
+
+		telescope.load_extension("fzf")
 	end,
 }

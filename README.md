@@ -53,7 +53,6 @@ A clean and highly optimized Neovim development environment tailored for modern 
 | Formatter | Language(s) |
 |---|---|
 | `stylua` | Lua |
-| `black` | Python |
 | `prettier` | JS, TS, JSX, TSX, JSON, JSONC |
 
 ---

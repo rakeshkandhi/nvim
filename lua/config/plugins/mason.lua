@@ -32,4 +32,22 @@ return {
 			})
 		end,
 	},
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = { "mason-org/mason.nvim" },
+		config = function()
+			require("mason-tool-installer").setup({
+				ensure_installed = {
+					-- Formatters
+					"stylua",
+					"prettier",
+					-- Linters
+					"ruff",
+					"eslint_d",
+				},
+				auto_update = true,
+				run_on_start = true,
+			})
+		end,
+	},
 }
