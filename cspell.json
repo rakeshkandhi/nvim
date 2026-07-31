@@ -60,5 +60,9 @@
     ".git/**",
     "dist/**",
     "build/**"
+  ],
+  "userWords": [
+    "keymap",
+    "nohlsearch"
   ]
 }
