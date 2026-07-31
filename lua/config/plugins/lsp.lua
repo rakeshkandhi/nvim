@@ -106,7 +106,32 @@ return {
 		end)
 
 		vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
-		vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
+		vim.keymap.set({ "n", "v" }, "<leader>ca", function()
+			local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+			local line_diags = vim.diagnostic.get(0, { lnum = lnum })
+			local lsp_diags = {}
+			for _, d in ipairs(line_diags) do
+				local lsp_diag = {
+					range = {
+						start = { line = d.lnum, character = d.col },
+						["end"] = { line = d.end_lnum or d.lnum, character = d.end_col or d.col },
+					},
+					severity = d.severity,
+					message = d.message,
+					source = d.source,
+					code = d.code,
+				}
+				if d.user_data and d.user_data.lsp then
+					lsp_diag.data = d.user_data.lsp.data
+				end
+				table.insert(lsp_diags, lsp_diag)
+			end
+			vim.lsp.buf.code_action({
+				context = {
+					diagnostics = lsp_diags,
+				},
+			})
+		end, { desc = "Code Action" })
 
 		vim.keymap.set("n", "[d", function()
 			vim.diagnostic.jump({ count = -1, float = true })
