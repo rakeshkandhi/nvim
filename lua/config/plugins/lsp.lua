@@ -57,7 +57,44 @@ return {
 			})
 		end
 
-		vim.lsp.enable(vim.tbl_keys(servers))
+		-- =========================
+		-- CSpell (spell check in code)
+		-- =========================
+		-- Shows misspellings as diagnostics; use <leader>ca to fix / add words.
+		local cspell_config = vim.fn.stdpath("config") .. "/cspell.json"
+		vim.lsp.config("cspell_ls", {
+			capabilities = capabilities,
+			cmd = { "cspell-lsp", "--stdio", "--config", cspell_config },
+			filetypes = {
+				"lua",
+				"python",
+				"javascript",
+				"javascriptreact",
+				"typescript",
+				"typescriptreact",
+				"html",
+				"css",
+				"scss",
+				"json",
+				"jsonc",
+				"yaml",
+				"markdown",
+				"text",
+				"gitcommit",
+				"bash",
+				"sh",
+				"zsh",
+				"c",
+				"cpp",
+				"rust",
+				"go",
+				"toml",
+			},
+		})
+
+		local enabled = vim.tbl_keys(servers)
+		table.insert(enabled, "cspell_ls")
+		vim.lsp.enable(enabled)
 
 		-- =========================
 		-- LSP Keymaps

@@ -28,6 +28,8 @@ return {
 					"clangd",
 					-- Lua
 					"lua_ls",
+					-- Spell check
+					"cspell_ls",
 				},
 			})
 		end,
@@ -44,6 +46,8 @@ return {
 					-- Linters
 					"ruff",
 					"eslint_d",
+					-- Spell checker (CLI companion for cspell-lsp)
+					"cspell",
 				},
 				auto_update = true,
 				run_on_start = true,

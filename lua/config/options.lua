@@ -1,18 +1,31 @@
--- =========================
--- Basic Settings
--- =========================
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.scrolloff = 8
+vim.opt.wrap = false
+
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
+vim.opt.smartindent = true
+
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.incsearch = true
+vim.opt.hlsearch = true
+
+vim.opt.clipboard = "unnamedplus"
+vim.opt.undofile = true
+vim.opt.mouse = "a"
 vim.opt.termguicolors = true
+
+vim.opt.updatetime = 300
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-vim.opt.clipboard = "unnamedplus" -- Sync with system clipboard
-vim.opt.undofile = true -- Save undo history
-vim.opt.ignorecase = true -- Case-insensitive searching UNLESS \C or capital in search
-vim.opt.smartcase = true -- Smart case searching
-vim.opt.wrap = false
+-- Trackpad / mouse wheel scrolling
+vim.keymap.set("n", "<ScrollWheelDown>", "j", { silent = true })
+vim.keymap.set("n", "<ScrollWheelUp>", "k", { silent = true })
+
+vim.keymap.set("n", "<ScrollWheelLeft>", "h", { silent = true })
+vim.keymap.set("n", "<ScrollWheelRight>", "l", { silent = true })

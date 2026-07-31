@@ -1,0 +1,12 @@
+# Neovim swap/backup/undo/state files
+*.swp
+*.swo
+*~
+*.un~
+
+# Temporary / Log files
+*.log
+checkhealth.log
+
+# OS-specific files
+.DS_Store
