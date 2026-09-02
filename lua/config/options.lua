@@ -19,6 +19,7 @@ vim.opt.mouse = "a"
 vim.opt.termguicolors = true
 
 vim.opt.updatetime = 300
+vim.opt.showtabline = 0 -- no bufferline.nvim; hide the native tabline too
 
 -- Global statusline (config.statusline draws it); tpipeline overrides this
 -- to 0 inside tmux — see the note in config.pack.

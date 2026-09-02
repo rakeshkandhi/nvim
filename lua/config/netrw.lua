@@ -1,21 +1,23 @@
--- Native file explorer (built-in netrw, no plugin) — <leader>e opens a
--- tree-view browser IN the current window (like Telescope's find_files):
--- picking a file replaces it, no persistent sidebar left behind.
+-- Native file explorer (built-in netrw, no plugin) — <leader>e toggles a
+-- persistent tree-view sidebar on the left; picking a file opens it in
+-- your main window (the sidebar stays open, like nvim-tree/neo-tree).
 --
--- (g:netrw_browse_split, which controls <cr>'s target window, explicitly
--- does NOT apply to :Lexplore per `:h g:netrw_browse_split` — that's why
--- :Lexplore always leaves its sidebar open with files opened elsewhere.
--- Plain :Explore has no split at all, so browse_split's default of 0
--- ("re-use the same window") is exactly what we want here.)
+-- The mechanism: `:Lexplore` sends <cr>-selected files to whatever window
+-- number is in g:netrw_chgwin (`:h netrw-editwindow`) — NOT g:netrw_browse_split,
+-- which `:h g:netrw_browse_split` says explicitly does not apply to :Lexplore.
+-- Per `:h netrw-:Lexplore`, netrw itself auto-sets an uninitialized chgwin
+-- to window 2 the first time it opens (exactly right for one main window +
+-- one sidebar) — no need to compute/track it ourselves.
 vim.g.netrw_liststyle = 3 -- tree view
 vim.g.netrw_banner = 0 -- hide the top banner
-vim.g.netrw_browse_split = 0 -- <cr> reuses the current window
+vim.g.netrw_winsize = 25 -- sidebar width (% of columns)
 vim.g.netrw_altfile = 1 -- keep the alternate file correct
 
-vim.keymap.set("n", "<leader>e", "<cmd>Explore<cr>", { silent = true, desc = "Open File Explorer" })
+vim.keymap.set("n", "<leader>e", "<cmd>Lexplore<cr>", { silent = true, desc = "Toggle File Explorer" })
 
--- netrw's built-in `%` prompts for a filename but leaves the new buffer
--- unattached from the current window; explicitly edit it in place.
+-- netrw's built-in `%` (create file) opens the new buffer in the netrw
+-- window itself instead of respecting netrw_chgwin. Override it to go to
+-- the same main window that <cr>-selected files use.
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "netrw",
 	callback = function()
@@ -34,8 +36,9 @@ vim.api.nvim_create_autocmd("FileType", {
 			end
 
 			if fname:match("/$") then
+				-- New directory: just refresh the netrw listing in place.
 				vim.fn.mkdir(path, "p")
-				vim.cmd("edit " .. vim.fn.fnameescape(dir))
+				vim.cmd("edit")
 			else
 				local f = io.open(path, "w")
 				if not f then
@@ -43,8 +46,14 @@ vim.api.nvim_create_autocmd("FileType", {
 					return
 				end
 				f:close()
-				vim.cmd("edit " .. vim.fn.fnameescape(path))
+
+				local escaped = vim.fn.fnameescape(path)
+				local target_win = vim.g.netrw_chgwin
+				if target_win and target_win > 0 and target_win <= vim.fn.winnr("$") then
+					vim.cmd(target_win .. "wincmd w")
+				end
+				vim.cmd("edit " .. escaped)
 			end
-		end, { buffer = true, silent = true, noremap = true, desc = "Create file in place" })
+		end, { buffer = true, silent = true, noremap = true, desc = "Create file in main window" })
 	end,
 })
