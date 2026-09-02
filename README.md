@@ -116,13 +116,13 @@ All keymaps use `<Space>` as the leader key.
 
 ### 🗂️ File Explorer (netrw)
 
-Uses `:Explore` (in-place), not `:Lexplore` (persistent sidebar) — per `:h g:netrw_browse_split`, that option explicitly doesn't apply to `:Lexplore`, so `:Explore` is what gives Telescope-like "pick a file, it replaces the browser" behavior.
+A persistent left sidebar (`:Lexplore`, like nvim-tree/neo-tree) — picking a file opens it in your main window and the sidebar stays open. The target window is `g:netrw_chgwin` (`:h netrw-editwindow`), not `g:netrw_browse_split` (which `:h g:netrw_browse_split` says explicitly doesn't apply to `:Lexplore`); netrw auto-points it at window 2 the first time the sidebar opens, which is exactly right for one sidebar + one main window.
 
 | Keybinding | Mode | Description |
 |---|---|---|
-| `<leader>e` | Normal | Open tree-view file explorer in the current window |
-| `Enter` | Netrw buffer | Open the selected file in place |
-| `%` | Netrw buffer | Create a new file in place |
+| `<leader>e` | Normal | Toggle the tree-view sidebar |
+| `Enter` | Netrw buffer | Open the selected file in your main window (sidebar stays open) |
+| `%` | Netrw buffer | Create a new file in your main window |
 
 ---
 
