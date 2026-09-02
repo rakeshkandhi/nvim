@@ -20,6 +20,10 @@ vim.opt.termguicolors = true
 
 vim.opt.updatetime = 300
 
+-- Global statusline (config.statusline draws it); tpipeline overrides this
+-- to 0 inside tmux — see the note in config.pack.
+vim.opt.laststatus = 3
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
