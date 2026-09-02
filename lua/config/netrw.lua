@@ -21,6 +21,14 @@ vim.keymap.set("n", "<leader>e", "<cmd>Lexplore<cr>", { silent = true, desc = "T
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "netrw",
 	callback = function()
+		-- Double-click opens file/dir (default maps to `-` which goes up)
+		vim.keymap.set("n", "<2-LeftMouse>", "<CR>", {
+			buffer = true,
+			remap = true,
+			silent = true,
+			desc = "Double-click opens file/dir",
+		})
+
 		vim.keymap.set("n", "%", function()
 			local fname = vim.fn.input("Enter filename: ")
 			if fname == "" then
