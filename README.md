@@ -116,11 +116,13 @@ All keymaps use `<Space>` as the leader key.
 
 ### 🗂️ File Explorer (netrw)
 
+Uses `:Explore` (in-place), not `:Lexplore` (persistent sidebar) — per `:h g:netrw_browse_split`, that option explicitly doesn't apply to `:Lexplore`, so `:Explore` is what gives Telescope-like "pick a file, it replaces the browser" behavior.
+
 | Keybinding | Mode | Description |
 |---|---|---|
-| `<leader>e` | Normal | Toggle tree-view file explorer |
-| `Enter` | Netrw buffer | Open file in the previous window |
-| `%` | Netrw buffer | Create a new file (opens in the previous window) |
+| `<leader>e` | Normal | Open tree-view file explorer in the current window |
+| `Enter` | Netrw buffer | Open the selected file in place |
+| `%` | Netrw buffer | Create a new file in place |
 
 ---
 
