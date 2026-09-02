@@ -26,8 +26,6 @@ vim.pack.add({
 	"https://github.com/lewis6991/gitsigns.nvim",
 	"https://github.com/christoomey/vim-tmux-navigator",
 	"https://github.com/windwp/nvim-autopairs",
-	"https://github.com/akinsho/bufferline.nvim",
-	"https://github.com/nvim-tree/nvim-web-devicons",
 	"https://github.com/folke/which-key.nvim",
 	"https://github.com/mfussenegger/nvim-lint",
 	"https://github.com/vimpostor/vim-tpipeline",

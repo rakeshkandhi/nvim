@@ -28,7 +28,6 @@ Installed via `vim.pack.add()` in `lua/config/pack.lua` — no lazy-loading, no 
 | `nvim-autopairs` | Auto-close brackets, quotes, tags |
 | `gitsigns.nvim` | Git diff gutter signs, hunk actions, inline blame |
 | `nvim-lint` | Linting |
-| `bufferline.nvim` + `nvim-web-devicons` | Buffer tab bar |
 | `which-key.nvim` | Keymap discoverability popup |
 | `vim-tmux-navigator` | Seamless tmux/Neovim pane navigation |
 | `vim-tpipeline` | Embeds the native statusline into tmux's status bar |
