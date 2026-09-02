@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-A clean and highly optimized Neovim development environment tailored for modern developers, featuring VSCode-like shortcuts, advanced LSP configurations, auto-formatting, linting, autocomplete, and lazy loading.
+A clean and highly optimized Neovim development environment tailored for modern developers, featuring VSCode-like shortcuts, advanced LSP configurations, auto-formatting, linting, and autocomplete — managed with Neovim's native `vim.pack` package manager (0.12+), no `lazy.nvim`.
 
 ---
 
@@ -18,22 +18,28 @@ A clean and highly optimized Neovim development environment tailored for modern 
 
 ## 🔌 Plugins
 
+Installed via `vim.pack.add()` in `lua/config/pack.lua` — no lazy-loading, no build hooks (treesitter parsers and telescope-fzf-native's build are handled by `dev-env-setup`'s `scripts/setup_nvim.sh` after clone/pull). Pinned revisions live in `nvim-pack-lock.json` (native equivalent of `lazy-lock.json` — see `:h vim.pack-lockfile`); update plugins with `:lua vim.pack.update()`.
+
 | Plugin | Purpose |
 |---|---|
 | `nvim-treesitter` | Syntax highlighting & indentation (auto-installs parsers) |
-| `nvim-lspconfig` + Mason | LSP server management & configuration |
-| `nvim-cmp` + LuaSnip | Autocomplete & snippet engine |
-| `conform.nvim` | Auto-formatting on save |
-| `nvim-lint` | Linting |
-| `telescope.nvim` | Fuzzy finder for files, grep, LSP, git |
+| `nvim-lspconfig` | LSP server configs, paired with native `vim.lsp.enable()` |
+| `telescope.nvim` + `telescope-fzf-native.nvim` + `plenary.nvim` | Fuzzy finder for files, grep, LSP, git |
 | `nvim-autopairs` | Auto-close brackets, quotes, tags |
 | `gitsigns.nvim` | Git diff gutter signs, hunk actions, inline blame |
-| `indent-blankline.nvim` | Vertical indent guides with scope highlighting |
-| `nvim-ts-context-commentstring` | Context-aware JSX/TSX commenting |
+| `nvim-lint` | Linting |
+| `bufferline.nvim` + `nvim-web-devicons` | Buffer tab bar |
+| `which-key.nvim` | Keymap discoverability popup |
+| `vim-tmux-navigator` | Seamless tmux/Neovim pane navigation |
+| `vim-tpipeline` | Embeds the native statusline into tmux's status bar |
 | `undotree` | Graphical undo history |
 | `catppuccin` | Theme (Mocha) |
 
-### 🖥️ LSP Servers (auto-installed via Mason)
+Autocomplete (`vim.lsp.completion`), the statusline, and format-on-save are native — see `lua/config/plugins/lsp.lua`, `lua/config/statusline.lua`, and `lua/config/formatting.lua`. No `nvim-cmp`, `lualine.nvim`, `conform.nvim`, Mason, or snippet engine.
+
+### 🖥️ LSP Servers
+
+Installed by `dev-env-setup`'s `scripts/install_deps.sh` (`install_lsp_tools`), not Mason — enabled here via `vim.lsp.enable()` + configs in `lua/config/plugins/lsp.lua`.
 
 | Server | Language(s) |
 |---|---|
@@ -47,13 +53,15 @@ A clean and highly optimized Neovim development environment tailored for modern 
 | `bashls` | Shell / Bash |
 | `clangd` | C / C++ |
 | `lua_ls` | Lua |
+| `cspell_ls` | Spell-check diagnostics (all filetypes) |
 
-### 🎨 Formatters (via conform.nvim)
+### 🎨 Formatters (native, `lua/config/formatting.lua`)
 
 | Formatter | Language(s) |
 |---|---|
 | `stylua` | Lua |
-| `prettier` | JS, TS, JSX, TSX, JSON, JSONC |
+| `ruff format` | Python |
+| `prettier` | JS, TS, JSX, TSX, JSON, JSONC, CSS, HTML, YAML, Markdown |
 
 ---
 
@@ -78,7 +86,7 @@ All keymaps use `<Space>` as the leader key.
 | Keybinding | Mode | Description |
 |---|---|---|
 | `Ctrl + /` or `Ctrl + _` | Normal | Toggle line comment |
-| `Ctrl + /` or `Ctrl + _` | Visual | Toggle block comment (JSX/TSX aware) |
+| `Ctrl + /` or `Ctrl + _` | Visual | Toggle block comment |
 | `Tab` | Visual | Indent selected block |
 | `Shift + Tab` | Visual | Outdent selected block |
 | `Alt + j` | Normal / Insert / Visual | Move line(s) down |
@@ -88,7 +96,7 @@ All keymaps use `<Space>` as the leader key.
 
 ---
 
-### 🔍 Telescope Search (Lazy-loaded)
+### 🔍 Telescope Search
 
 | Keybinding | Mode | Description |
 |---|---|---|
