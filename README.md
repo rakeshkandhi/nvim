@@ -35,7 +35,7 @@ Installed via `vim.pack.add()` in `lua/config/pack.lua` — no lazy-loading, no 
 | `undotree` | Graphical undo history |
 | `catppuccin` | Theme (Mocha) |
 
-Autocomplete (`vim.lsp.completion`), the statusline, and format-on-save are native — see `lua/config/plugins/lsp.lua`, `lua/config/statusline.lua`, and `lua/config/formatting.lua`. No `nvim-cmp`, `lualine.nvim`, `conform.nvim`, Mason, or snippet engine.
+Autocomplete (`vim.lsp.completion`), the statusline, format-on-save, and the file explorer (`netrw`, `<leader>e`) are native — see `lua/config/plugins/lsp.lua`, `lua/config/statusline.lua`, `lua/config/formatting.lua`, and `lua/config/netrw.lua`. No `nvim-cmp`, `lualine.nvim`, `conform.nvim`, Mason, or snippet engine.
 
 ### 🖥️ LSP Servers
 
@@ -111,6 +111,16 @@ All keymaps use `<Space>` as the leader key.
 | `<leader>gc` | Normal | Git commits |
 | `<leader>gb` | Normal | Git branches |
 | `<leader>gs` | Normal | Git status |
+
+---
+
+### 🗂️ File Explorer (netrw)
+
+| Keybinding | Mode | Description |
+|---|---|---|
+| `<leader>e` | Normal | Toggle tree-view file explorer |
+| `Enter` | Netrw buffer | Open file in the previous window |
+| `%` | Netrw buffer | Create a new file (opens in the previous window) |
 
 ---
 
