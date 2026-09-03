@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-A clean and highly optimized Neovim development environment tailored for modern developers, featuring VSCode-like shortcuts, advanced LSP configurations, auto-formatting, linting, and autocomplete — managed with Neovim's native `vim.pack` package manager (0.12+), no `lazy.nvim`.
+A clean and highly optimized Neovim development environment tailored for modern developers, featuring VSCode-like shortcuts, advanced LSP configurations, auto-formatting, linting, and autocomplete — managed with Neovim's native `vim.pack` package manager (0.12+), no `lazy.nvim`. LSP server configs use native `lsp/` directory auto-discovery (0.11+), no `nvim-lspconfig`.
 
 ---
 
@@ -12,6 +12,9 @@ A clean and highly optimized Neovim development environment tailored for modern 
 | Tab / Indent width | 4 spaces (expandtab) |
 | True color | Enabled (`termguicolors`) |
 | Leader key | `<Space>` |
+| Smooth scrolling | Enabled (`smoothscroll`) |
+| Sign column | Always visible |
+| Code folding | Treesitter-powered (`vim.treesitter.foldexpr()`, async) |
 | Spellcheck | Auto-enabled for `markdown`, `text`, `gitcommit` |
 
 ---
@@ -23,7 +26,6 @@ Installed via `vim.pack.add()` in `lua/config/pack.lua` — no lazy-loading, no 
 | Plugin | Purpose |
 |---|---|
 | `nvim-treesitter` | Syntax highlighting & indentation (auto-installs parsers) |
-| `nvim-lspconfig` | LSP server configs, paired with native `vim.lsp.enable()` |
 | `telescope.nvim` + `telescope-fzf-native.nvim` + `plenary.nvim` | Fuzzy finder for files, grep, LSP, git |
 | `nvim-autopairs` | Auto-close brackets, quotes, tags |
 | `gitsigns.nvim` | Git diff gutter signs, hunk actions, inline blame |
@@ -34,11 +36,11 @@ Installed via `vim.pack.add()` in `lua/config/pack.lua` — no lazy-loading, no 
 | `undotree` | Graphical undo history |
 | `catppuccin` | Theme (Mocha) |
 
-Autocomplete (`vim.lsp.completion`), the statusline, format-on-save, and the file explorer (`netrw`, `<leader>e`) are native — see `lua/config/plugins/lsp.lua`, `lua/config/statusline.lua`, `lua/config/formatting.lua`, and `lua/config/netrw.lua`. No `nvim-cmp`, `lualine.nvim`, `conform.nvim`, Mason, or snippet engine.
+Autocomplete (`vim.lsp.completion`), the statusline, format-on-save, and the file explorer (`netrw`, `<leader>e`) are native — see `lua/config/plugins/lsp.lua`, `lua/config/statusline.lua`, `lua/config/formatting.lua`, and `lua/config/netrw.lua`. LSP server configs live in native `lsp/*.lua` directory files (Neovim 0.11+). No `nvim-cmp`, `nvim-lspconfig`, `lualine.nvim`, `conform.nvim`, Mason, or snippet engine.
 
 ### 🖥️ LSP Servers
 
-Installed by `dev-env-setup`'s `scripts/install_deps.sh` (`install_lsp_tools`), not Mason — enabled here via `vim.lsp.enable()` + configs in `lua/config/plugins/lsp.lua`.
+Installed by `dev-env-setup`'s `scripts/install_deps.sh` (`install_lsp_tools`), not Mason — configured in native `lsp/*.lua` directory files (Neovim 0.11+ auto-discovery) and enabled via `vim.lsp.enable()` in `lua/config/plugins/lsp.lua`.
 
 | Server | Language(s) |
 |---|---|
@@ -76,7 +78,6 @@ All keymaps use `<Space>` as the leader key.
 |---|---|---|
 | `gl` | Normal | Show diagnostic float under cursor |
 | `<Esc>` | Normal | Clear search highlighting |
-| `Ctrl + s` | Normal / Insert / Visual | Save file (skips non-modifiable buffers) |
 
 ---
 
@@ -84,14 +85,31 @@ All keymaps use `<Space>` as the leader key.
 
 | Keybinding | Mode | Description |
 |---|---|---|
-| `Ctrl + /` or `Ctrl + _` | Normal | Toggle line comment |
-| `Ctrl + /` or `Ctrl + _` | Visual | Toggle block comment |
-| `Tab` | Visual | Indent selected block |
-| `Shift + Tab` | Visual | Outdent selected block |
+| `gc` / `gcc` | Normal / Visual | Toggle comment (built-in 0.10+) |
 | `Alt + j` | Normal / Insert / Visual | Move line(s) down |
 | `Alt + k` | Normal / Insert / Visual | Move line(s) up |
 | `Alt + Shift + F` | Normal | Format document |
-| `Alt + z` | Normal | Toggle line wrap |
+
+---
+
+### 🧩 Snippets (built-in `vim.snippet`, 0.10+)
+
+| Keybinding | Mode | Description |
+|---|---|---|
+| `Tab` | Insert / Select | Jump to next snippet tabstop |
+| `Shift + Tab` | Insert / Select | Jump to previous snippet tabstop |
+
+---
+
+### 📁 Code Folding (treesitter-powered)
+
+| Keybinding | Mode | Description |
+|---|---|---|
+| `za` | Normal | Toggle fold under cursor |
+| `zo` | Normal | Open fold under cursor |
+| `zc` | Normal | Close fold under cursor |
+| `zR` | Normal | Open all folds |
+| `zM` | Normal | Close all folds |
 
 ---
 
@@ -127,6 +145,21 @@ A persistent left sidebar (`:Lexplore`, like nvim-tree/neo-tree) — picking a f
 
 ### 💡 LSP & Navigation
 
+#### Built-in Defaults (Neovim 0.11+)
+
+These keymaps work out of the box with no configuration:
+
+| Keybinding | Mode | Description |
+|---|---|---|
+| `grn` | Normal | Rename symbol |
+| `gra` | Normal / Visual | Code actions |
+| `grr` | Normal | References |
+| `gri` | Normal | Implementations |
+| `gO` | Normal | Document symbols / Table of Contents |
+| `Ctrl + S` | Insert | Signature help |
+
+#### Custom Keymaps
+
 | Keybinding | Mode | Description |
 |---|---|---|
 | `gd` | Normal | Go to Definition (Telescope) |
@@ -146,6 +179,16 @@ A persistent left sidebar (`:Lexplore`, like nvim-tree/neo-tree) — picking a f
 
 ---
 
+### 🔎 Inlay Hints & Toggles
+
+| Keybinding | Mode | Description |
+|---|---|---|
+| `<leader>ti` | Normal | Toggle LSP inlay hints (type annotations, parameter names) |
+| `<leader>tb` | Normal | Toggle inline git blame |
+| `<leader>?` | Normal | Show buffer-local keymaps (which-key) |
+
+---
+
 ### 🌿 Git (Gitsigns)
 
 | Keybinding | Mode | Description |
@@ -162,7 +205,6 @@ A persistent left sidebar (`:Lexplore`, like nvim-tree/neo-tree) — picking a f
 | `<leader>hb` | Normal | Blame line (full) |
 | `<leader>hd` | Normal | Diff this |
 | `<leader>hy` | Normal | Copy commit hash from blame |
-| `<leader>tb` | Normal | Toggle inline blame |
 
 ---
 
@@ -171,3 +213,14 @@ A persistent left sidebar (`:Lexplore`, like nvim-tree/neo-tree) — picking a f
 | Keybinding | Mode | Description |
 |---|---|---|
 | `<leader>u` | Normal | Toggle undo history tree |
+
+---
+
+### 🖥️ Tmux Navigation
+
+| Keybinding | Mode | Description |
+|---|---|---|
+| `Ctrl + h` | Normal | Navigate left (tmux/nvim) |
+| `Ctrl + j` | Normal | Navigate down (tmux/nvim) |
+| `Ctrl + k` | Normal | Navigate up (tmux/nvim) |
+| `Ctrl + l` | Normal | Navigate right (tmux/nvim) |
