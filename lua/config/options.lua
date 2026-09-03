@@ -17,6 +17,13 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.undofile = true
 vim.opt.mouse = "a"
 vim.opt.termguicolors = true
+vim.opt.signcolumn = "yes"
+vim.opt.smoothscroll = true
+
+-- Treesitter-powered code folding (async in 0.11+)
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevelstart = 99 -- start with all folds open
 
 vim.opt.updatetime = 300
 vim.opt.showtabline = 0 -- no bufferline.nvim; hide the native tabline too

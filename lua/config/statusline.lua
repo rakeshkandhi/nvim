@@ -40,11 +40,11 @@ function _G._statusline()
 	local mode_name = modes[m] or (" " .. m:upper() .. " ")
 
 	local path = vim.b.rel_path or "%f"
-	local branch_str = vim.b.git_branch and ("%#StlBranchSep#%#StlBranch# " .. vim.b.git_branch .. " %#StlBranchSep#%*") or ""
+	local branch_str = vim.b.git_branch and ("%#StlBranchSep#%#StlBranch# " .. vim.b.git_branch .. " %#StlBranchSep#%*") or ""
 
 	local diag = ""
 	local counts = vim.diagnostic.count(0) or {}
-	local labels = { " ", " ", " ", " " }
+	local labels = { " ", " ", " ", " " }
 	local hls = { "DiagnosticError", "DiagnosticWarn", "DiagnosticInfo", "DiagnosticHint" }
 	for i = 1, 4 do
 		if counts[i] and counts[i] > 0 then
@@ -52,22 +52,31 @@ function _G._statusline()
 		end
 	end
 
-	local mode_block = "%#StlModeSep#%#StlMode#" .. mode_name .. "%#StlModeSep#%*"
-	
+	local mode_block = "%#StlModeSep#%#StlMode#" .. mode_name .. "%#StlModeSep#%*"
+
 	local ft = vim.bo.filetype ~= "" and vim.bo.filetype or "text"
-	local info_block = "%#StlInfoSep#%#StlInfo#" .. ft .. "  %l:%c %#StlInfoSep#%*"
-	
+	local info_block = "%#StlInfoSep#%#StlInfo#" .. ft .. "  %l:%c %#StlInfoSep#%*"
+
 	local path_block = "%#StlPath# " .. path .. " %*"
 
 	return " " .. mode_block .. " %=" .. diag .. info_block .. path_block .. branch_str .. " "
 end
 
+-- Use vim.fs.root() (0.10+) and vim.system() (0.10+) instead of shelling
+-- out to git — cleaner, faster, non-blocking capable.
 vim.api.nvim_create_autocmd("BufEnter", {
 	callback = function()
-		local root = vim.fn.system("git rev-parse --show-toplevel 2>/dev/null"):gsub("%s+$", "")
-		if root ~= "" then
-			vim.b.git_branch = vim.fn.system("git branch --show-current 2>/dev/null"):gsub("%s+$", "")
-			vim.b.rel_path = vim.fn.expand("%:p"):sub(#root + 2)
+		local bufpath = vim.api.nvim_buf_get_name(0)
+		local root = vim.fs.root(0, ".git")
+		if root then
+			local obj = vim.system({ "git", "branch", "--show-current" }, { text = true, cwd = root }):wait()
+			vim.b.git_branch = (obj.stdout or ""):gsub("%s+$", "")
+			-- Compute path relative to project root
+			if bufpath ~= "" then
+				vim.b.rel_path = bufpath:sub(#root + 2)
+			else
+				vim.b.rel_path = "%f"
+			end
 		else
 			vim.b.git_branch = nil
 			vim.b.rel_path = vim.fn.expand("%:p:~")

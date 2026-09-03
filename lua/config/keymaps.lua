@@ -26,3 +26,20 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move Selection Up" })
 -- vim.keymap.set("n", "<leader>ss", "z=", { desc = "Spelling Suggestions (z=)" })
 -- vim.keymap.set("n", "<leader>sa", "zg", { desc = "Add Word to Dict (zg)" })
 -- vim.keymap.set("n", "<leader>st", "<cmd>set spell!<cr>", { desc = "Toggle Red Underline Spell Check" })
+
+-- =========================
+-- Snippet Navigation (built-in vim.snippet, 0.10+)
+-- =========================
+vim.keymap.set({ "i", "s" }, "<Tab>", function()
+	if vim.snippet.active({ direction = 1 }) then
+		return "<cmd>lua vim.snippet.jump(1)<cr>"
+	end
+	return "<Tab>"
+end, { expr = true, desc = "Snippet Jump Next / Tab" })
+
+vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
+	if vim.snippet.active({ direction = -1 }) then
+		return "<cmd>lua vim.snippet.jump(-1)<cr>"
+	end
+	return "<S-Tab>"
+end, { expr = true, desc = "Snippet Jump Prev / S-Tab" })
