@@ -64,7 +64,7 @@ end
 
 -- Use vim.fs.root() (0.10+) and vim.system() (0.10+) instead of shelling
 -- out to git — cleaner, faster, non-blocking capable.
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd({ "BufEnter", "BufFilePost" }, {
 	callback = function()
 		local bufpath = vim.api.nvim_buf_get_name(0)
 		local root = vim.fs.root(0, ".git")
@@ -81,6 +81,17 @@ vim.api.nvim_create_autocmd("BufEnter", {
 			vim.b.git_branch = nil
 			vim.b.rel_path = vim.fn.expand("%:p:~")
 		end
+	end,
+})
+
+-- Force a statusline redraw after closing a buffer so tpipeline (tmux
+-- status bar) immediately reflects the new buffer instead of showing
+-- the stale filename of the file that was just closed.
+vim.api.nvim_create_autocmd("BufDelete", {
+	callback = function()
+		vim.schedule(function()
+			vim.cmd("redrawstatus!")
+		end)
 	end,
 })
 
